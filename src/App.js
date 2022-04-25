@@ -1,25 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react'
+import ListBox from './ListBox'
+import { goFetch } from './apiCalls'
+import Form from './Form'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default class App extends Component {
+  constructor() {
+    super()
+    this.state = {
+      groceryList: [],
+
+    }
+
+  }
+
+componentDidMount() {
+  goFetch()
+  .then(data => this.setState({groceryList: data}))
 }
 
-export default App;
+addIdea = ({idea}) => {
+  console.log('app',idea)
+  this.setState({groceryList: [...this.state.groceryList, idea]})
+
+}
+
+  render() {
+    return (
+      <div>
+            <Form addIdea={this.addIdea}/>
+              <ListBox list={this.state.groceryList} />
+      </div>
+    )
+  }
+}
+
+
+
